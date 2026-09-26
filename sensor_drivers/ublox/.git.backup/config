@@ -1,0 +1,11 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+[remote "origin"]
+	url = https://github.com/KumarRobotics/ublox.git
+	fetch = +refs/heads/ros2:refs/remotes/origin/ros2
+[branch "ros2"]
+	remote = origin
+	merge = refs/heads/ros2

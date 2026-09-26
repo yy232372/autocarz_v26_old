@@ -1,0 +1,58 @@
+# Safe rover configuration for a u-blox ZED-F9P connected over USB.
+ublox_gps_node:
+  ros__parameters:
+    debug: 1
+
+    # Keep the receiver-side configuration, as in the ROS 1 setup.  F9P
+    # firmware can reject otherwise harmless CFG-GNSS writes (notably SBAS),
+    # which makes the node terminate before publishing any topics.
+    config_on_startup: false
+
+    # Do not persist startup experiments to the receiver's EEPROM.
+    save:
+      mask: 0
+      device: 0
+
+    device: /dev/ttyACM0
+    frame_id: gps
+
+    rate: 1.0
+    nav_rate: 1
+    dynamic_model: automotive
+    fix_mode: auto
+    enable_ppp: false
+    dr_limit: 0
+
+    # Keep UART1 usable for a wired RTCM source. These do not change USB I/O.
+    uart1:
+      baudrate: 115200
+      in: 35                    # UBX | NMEA | RTCM3
+      out: 1                    # UBX
+
+    gnss:
+      gps: true
+      glonass: true
+      galileo: true
+      beidou: true
+      qzss: true
+
+    # Rover mode: never start survey-in / base-station operation.
+    tmode3: 0
+
+    inf:
+      all: false
+
+    # Enable only the messages needed for positioning.  publish.all enables
+    # legacy messages unsupported by the F9P and produces CFG-MSG NACKs.
+    publish:
+      all: false
+      nmea: true
+      nav:
+        pvt: true
+        relposned: true
+      rxm:
+        rtcm: true
+      esf:
+        all: false
+      hnr:
+        pvt: false

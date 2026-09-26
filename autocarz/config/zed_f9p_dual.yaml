@@ -1,0 +1,53 @@
+# Shared, non-persistent rover configuration for both ZED-F9P receivers.
+# Per-receiver device paths and frame IDs are supplied by dual_ublox.launch.py.
+/**:
+  ros__parameters:
+    debug: 1
+
+    # Keep the receiver-side configuration already used by the ROS 1 setup.
+    # In particular, do not reconfigure or write launch-time settings into
+    # either receiver's EEPROM.
+    config_on_startup: false
+    save:
+      mask: 0
+      device: 0
+
+    rate: 1.0
+    nav_rate: 1
+    dynamic_model: automotive
+    fix_mode: auto
+    enable_ppp: false
+    dr_limit: 0
+
+    # Keep UART1 available if a wired RTCM source is later required.
+    uart1:
+      baudrate: 115200
+      in: 35                    # UBX | NMEA | RTCM3
+      out: 1                    # UBX
+
+    gnss:
+      gps: true
+      glonass: true
+      galileo: true
+      beidou: true
+      qzss: true
+
+    # Both receivers are rovers, never base stations.
+    tmode3: 0
+
+    inf:
+      all: false
+
+    publish:
+      all: false
+      # NTRIP receives the rear receiver's NMEA sentences on /ublox1/nmea.
+      nmea: true
+      nav:
+        pvt: true
+        relposned: true
+      rxm:
+        rtcm: true
+      esf:
+        all: false
+      hnr:
+        pvt: false
